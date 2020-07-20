@@ -37,10 +37,11 @@ RCT_EXPORT_METHOD(uploadFile:(NSDictionary *)options
 
     
     NSString *fileName = @"";
-    NSString *contentType = @"image/png";
+    NSString *contentType = @"heic";
     NSString *filePath = @"";
     if ([options valueForKey:_fileName] != [NSNull null]) {
         fileName = [options valueForKey:_fileName];
+        NSLog(fileName)
     }
 
     if ([options valueForKey:_contentType] != [NSNull null]) {
@@ -64,27 +65,46 @@ RCT_EXPORT_METHOD(uploadFile:(NSDictionary *)options
 
     // Create a local container object.
     AZSCloudBlobContainer *blobContainer = [blobClient containerReferenceFromName:CONTAINER_NAME];
-    [blobContainer createContainerIfNotExistsWithAccessType:AZSContainerPublicAccessTypeContainer requestOptions:nil operationContext:nil completionHandler:^(NSError *error, BOOL exists)
-        {
-            if (error){
-                reject(@"no_event",@"Error in creating container.",error);
-            }
-            else{
-                // Create a local blob object
-                AZSCloudBlockBlob *blockBlob = [blobContainer blockBlobReferenceFromName:fileName];
-                blockBlob.properties.contentType = contentType;
+    // [blobContainer createContainerIfNotExistsWithAccessType:AZSContainerPublicAccessTypeContainer requestOptions:nil operationContext:nil completionHandler:^(NSError *error, BOOL exists)
+    //     {
+    //         if (error){
+    //             reject(@"no_event",@"Error in creating container.",error);
+    //         }
+    //         else{
+    //             // Create a local blob object
+    //             AZSCloudBlockBlob *blockBlob = [blobContainer blockBlobReferenceFromName:fileName];
+    //             blockBlob.properties.contentType = contentType;
                 
-                [blockBlob uploadFromFileWithURL:[NSURL URLWithString:filePath] completionHandler:^(NSError * error) {
-                    if (error){
-                        reject(@"no_event",[NSString stringWithFormat: @"Error in creating blob. %@",filePath],error);
-                    }else{
-                        resolve(fileName);
-                    }       
-                }];
+    //             [blockBlob uploadFromFileWithURL:[NSURL URLWithString:filePath] completionHandler:^(NSError * error) {
+    //                 if (error){
+    //                     reject(@"no_event",[NSString stringWithFormat: @"Error in creating blob. %@",filePath],error);
+    //                 }else{
+    //                     resolve(fileName);
+    //                 }       
+    //             }];
                 
              
-            }
-        }];
+    //         }
+    //     }];
+    [blobContainer createContainerIfNotExistsWithAccessType:AZSContainerPublicAccessTypeContainer requestOptions:nil operationContext:nil completionHandler:^(NSError *error, BOOL exists)
+    {
+        if (error){
+            reject(@"no_event",@"Error in creating container.",error);
+        }
+        else{
+            // Create a local blob object
+            NSString ***fileName** = [self genRandStringLength: 10];
+            AZSCloudBlockBlob *blockBlob = [blobContainer blockBlobReferenceFromName:**fileName**];
+            blockBlob.properties.contentType = @"image/png";
+            [blockBlob uploadFromFileWithPath:file  completionHandler:^(NSError * error) {
+                if (error){
+                    reject(@"no_event",[NSString stringWithFormat: @"Error in creating blob. %@",file],error);
+                }else{
+                    resolve(fileName);
+                }
+            }];
+        }
+    }];
 }
 
 
