@@ -41,15 +41,17 @@ RCT_EXPORT_METHOD(uploadFile:(NSDictionary *)options
     NSString *filePath = @"";
     if ([options valueForKey:_fileName] != [NSNull null]) {
         fileName = [options valueForKey:_fileName];
-        NSLog(fileName)
+        NSLog(@'%@Testing fileName', fileName)
     }
 
     if ([options valueForKey:_contentType] != [NSNull null]) {
         contentType = [options valueForKey:_contentType];
+        NSLog(@'%@Testing contentType', contentType)
     }
 
     if ([options valueForKey:_filePath] != [NSNull null]) {
         filePath = [options valueForKey:_filePath];
+        NSLog(@'%@Testing filePath', filePath)
     }
 
     
